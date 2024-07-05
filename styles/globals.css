@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "GowunBatang-Regular";
+  src: url("/fonts/GowunBatang-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body,
+.ant-typography,
+.ant-typography h1,
+.ant-typography h2,
+.ant-typography h3,
+.ant-typography h4,
+.ant-typography h5,
+.ant-typography h6 {
+  font-family: "GowunBatang-Regular", sans-serif !important;
+}

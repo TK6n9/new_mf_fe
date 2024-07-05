@@ -1,0 +1,58 @@
+const StyledDrawer = styled(Drawer)`
+  .ant-drawer-content-wrapper {
+    max-width: 768px;
+    margin: 0 auto;
+  }
+`;
+
+
+
+
+
+
+
+  <Row justify="center" align="middle"></Row>
+      <Row gutter={[24, 24]} justify="space-between">
+        <Col span={6} style={{ textAlign: "center" }}>
+          <Space direction="vertical" size="large">
+            <Title level={1}>⚙️</Title>
+            <Text>인생 톱니바퀴</Text>
+          </Space>
+        </Col>
+        <Col span={6} style={{ textAlign: "center" }}>
+          <Space direction="vertical" size="large">
+            <Title level={1}>👁️</Title>
+            <Text>
+              보이는 것 <br />
+              보이지 않는 것
+            </Text>
+          </Space>
+        </Col>
+        <Col span={6} style={{ textAlign: "center" }}>
+          <Space direction="vertical" size="large">
+            <Title level={1}>⏱️</Title>
+            <Text>
+              씨앗을 심는 시기,
+              <br />
+              새싹이 자라는 시기,
+              <br />
+              성장하는 시기,
+              <br />
+              열매를 맺는 시기 존재하는가
+            </Text>
+          </Space>
+        </Col>
+        <Col span={6} style={{ textAlign: "center" }}>
+          <Space direction="vertical" size="large">
+            <Title level={1}>🛥️</Title>
+            <Text>
+              배는 주변의 바닷물로 <br />
+              바다에 떠 있을 수 있지만,
+              <br />
+              바닷물이 배 안으로 들어 올땐
+              <br /> 배는 침몰한다.
+            </Text>
+          </Space>
+        </Col>
+      </Row>
+    </>

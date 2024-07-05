@@ -1,0 +1,26 @@
+.howItWorksContainer {
+  text-align: center;
+  /* background-color: rgb(247, 245, 239); */
+}
+
+.howItWorksTitle {
+  margin: 0;
+}
+
+.howItWorksCol {
+  display: flex;
+  justify-content: center;
+}
+
+.howItWorksCard {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  /* max-width: 300px; */
+}
+
+.howItWorksIcon {
+  font-size: 72px;
+  margin-bottom: 20px;
+}

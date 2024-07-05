@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "GowunBatang-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunBatang-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.heroContainer {
+  position: relative;
+  text-align: left;
+  color: white;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.heroBackground {
+  width: 100%;
+  height: auto;
+}
+
+.heroImage {
+  width: 100%;
+  height: auto;
+}
+
+.heroContent {
+  position: absolute;
+  bottom: 20px; /* Adjust to position the content vertically */
+  left: 20px; /* Adjust to position the content horizontally */
+  z-index: 2;
+}
+
+.heroTitle {
+  font-size: 48px; /* Adjust the font size */
+  font-weight: bold;
+  margin: 0;
+}
+
+.heroDescription {
+  font-size: 16px; /* Adjust the font size */
+  margin-top: 10px;
+}
+
+.heroButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: black; /* Adjust the button background color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.heroButton:hover {
+  background-color: gray; /* Adjust the hover effect */
+}

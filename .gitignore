@@ -1,0 +1,45 @@
+# 운영 체제별 파일
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 개발 도구 및 편집기별 파일
+.vscode/
+.idea/
+.project
+.classpath
+.settings/
+
+# 컴파일된 파일 및 디렉터리
+*.o
+*.obj
+*.so
+*.exe
+*.class
+*.jar
+*.pyc
+__pycache__/
+
+# 로그 파일
+*.log
+
+# 라이브러리 및 종속성 디렉터리
+node_modules/
+venv/
+env/
+target/
+build/
+vendor/bundle/
+
+# 환경 설정 파일
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Next.js 빌드 출력 디렉터리
+.next/
+
+# Next.js 정적 사이트 내보내기 디렉터리
+out/

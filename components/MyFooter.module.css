@@ -1,0 +1,68 @@
+.footerTitle {
+  margin-bottom: 24px;
+}
+
+.inputGroup {
+  margin-bottom: 24px;
+}
+
+.socialLinks {
+  margin-bottom: 48px;
+}
+
+.socialLink {
+  margin-right: 12px;
+  color: black;
+}
+
+.copyrightText {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.policyLinks {
+  display: flex;
+  flex-direction: row;
+  margin-top: 12px;
+}
+
+.policyLink {
+  font-size: 12px;
+}
+
+.imageWrapper {
+  height: 400px;
+  overflow: hidden;
+}
+
+.imageContent {
+  height: 500px;
+  background-image: url("/4190917.jpg");
+  background-size: cover;
+  background-position: center bottom;
+  background-attachment: fixed;
+  overflow: hidden;
+  position: relative;
+  transition: top 2s ease-in-out; /* 부드러운 이동 효과 */
+}
+
+.fadeIn {
+  opacity: 1;
+  transition: opacity 2s ease-in-out, top 2s ease-in-out; /* 서서히 나타남 */
+  top: 0;
+}
+
+.hidden {
+  opacity: 0;
+  top: -400px;
+}
+
+.primaryText {
+  font-size: 24px;
+  color: white;
+}
+
+.secondaryText {
+  font-size: 16px;
+  color: white;
+}
