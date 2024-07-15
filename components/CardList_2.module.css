@@ -65,7 +65,7 @@
 .hoverContent {
   display: flex;
   flex-direction: column;
-  margin-left: 55px;
+  /* margin-left: 55px; */
 }
 
 .hoverTitle {

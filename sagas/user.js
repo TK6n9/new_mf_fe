@@ -19,9 +19,15 @@ import {
   UNFOLLOW_SUCCESS,
 } from "../reducers/user";
 
-function logInAPI(data) {
-  return axios.post("/api/login", data);
-}
+// function logInAPI(data) {
+//   return axios.post("/api/login", data);
+// }
+// function logOutAPI() {
+//   return axios.post("/api/logout");
+// }
+// function signUpAPI() {
+//   return axios.post("/api/signUp");
+// }
 
 function* logIn(action) {
   try {
@@ -41,10 +47,6 @@ function* logIn(action) {
   }
 }
 
-function logOutAPI() {
-  return axios.post("/api/logout");
-}
-
 function* logOut() {
   try {
     // const result = yield call(logOutAPI);
@@ -59,10 +61,6 @@ function* logOut() {
       error: err.response.data,
     });
   }
-}
-
-function signUpAPI() {
-  return axios.post("/api/signUp");
 }
 
 function* signUp() {
@@ -81,56 +79,6 @@ function* signUp() {
   }
 }
 
-function followAPI() {
-  return axios.post("/api/follow");
-}
-
-function* follow(action) {
-  try {
-    // const result = yield call(followAPI);
-    yield delay(1000);
-    yield put({
-      type: FOLLOW_SUCCESS,
-      data: action.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: FOLLOW_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
-
-function unfollowAPI() {
-  return axios.post("/api/unfollow");
-}
-
-function* unfollow(action) {
-  try {
-    // const result = yield call(unfollowAPI);
-    yield delay(1000);
-    yield put({
-      type: UNFOLLOW_SUCCESS,
-      data: action.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: UNFOLLOW_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
-
-function* watchFollow() {
-  yield takeLatest(FOLLOW_REQUEST, follow);
-}
-
-function* watchUnfollow() {
-  yield takeLatest(UNFOLLOW_REQUEST, unfollow);
-}
-
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -143,10 +91,60 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
+// function followAPI() {
+//   return axios.post("/api/follow");
+// }
+
+// function* follow(action) {
+//   try {
+//     // const result = yield call(followAPI);
+//     yield delay(1000);
+//     yield put({
+//       type: FOLLOW_SUCCESS,
+//       data: action.data,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     yield put({
+//       type: FOLLOW_FAILURE,
+//       error: err.response.data,
+//     });
+//   }
+// }
+
+// function unfollowAPI() {
+//   return axios.post("/api/unfollow");
+// }
+
+// function* unfollow(action) {
+//   try {
+//     // const result = yield call(unfollowAPI);
+//     yield delay(1000);
+//     yield put({
+//       type: UNFOLLOW_SUCCESS,
+//       data: action.data,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     yield put({
+//       type: UNFOLLOW_FAILURE,
+//       error: err.response.data,
+//     });
+//   }
+// }
+
+// function* watchFollow() {
+//   yield takeLatest(FOLLOW_REQUEST, follow);
+// }
+
+// function* watchUnfollow() {
+//   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+// }
+
 export default function* userSaga() {
   yield all([
-    fork(watchFollow),
-    fork(watchUnfollow),
+    // fork(watchFollow),
+    // fork(watchUnfollow),
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
