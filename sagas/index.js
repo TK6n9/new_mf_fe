@@ -1,9 +1,7 @@
-import { all, fork } from "redux-saga/effects";
+import { all } from "redux-saga/effects";
+import watchUserActions from "./user";
+import watchPostActions from "./post";
 
-import postSaga from "./post";
-import userSaga from "./user";
-
-//스토어로 간다 이것이
 export default function* rootSaga() {
-  yield all([fork(postSaga), fork(userSaga)]);
+  yield all([watchUserActions(), watchPostActions()]);
 }

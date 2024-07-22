@@ -1,147 +1,56 @@
-import axios from "axios";
-import shortId from "shortid";
+import { put, takeLatest, delay } from "redux-saga/effects";
 import {
-  all,
-  delay,
-  fork,
-  put,
-  takeLatest,
-  throttle,
-} from "redux-saga/effects";
-
-import {
-  ADD_COMMENT_FAILURE,
-  ADD_COMMENT_REQUEST,
-  ADD_COMMENT_SUCCESS,
-  ADD_POST_FAILURE,
-  ADD_POST_REQUEST,
-  ADD_POST_SUCCESS,
-  generateDummyPost,
-  LOAD_POSTS_FAILURE,
-  LOAD_POSTS_REQUEST,
-  LOAD_POSTS_SUCCESS,
-  REMOVE_POST_FAILURE,
-  REMOVE_POST_REQUEST,
-  REMOVE_POST_SUCCESS,
+  addPostRequest,
+  addPostSuccess,
+  addPostFailure,
+  deletePostRequest,
+  deletePostSuccess,
+  deletePostFailure,
 } from "../reducers/post";
-import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
-function loadPostsAPI(data) {
-  return axios.get("/api/posts", data);
-}
-
-function* loadPosts(action) {
+function* addPostSaga(action) {
   try {
-    // const result = yield call(loadPostsAPI, action.data);
-    yield delay(1000);
-    yield put({
-      type: LOAD_POSTS_SUCCESS,
-      data: generateDummyPost(10),
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: LOAD_POSTS_FAILURE,
-      data: err.response.data,
-    });
+    yield delay(500); // 비동기 작업을 시뮬레이션하기 위한 딜레이
+
+    let posts = [];
+    if (typeof window !== "undefined") {
+      posts = JSON.parse(localStorage.getItem("posts")) || [];
+    }
+
+    posts.push(action.payload);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("posts", JSON.stringify(posts));
+    }
+
+    yield put(addPostSuccess(action.payload));
+  } catch (error) {
+    yield put(addPostFailure(error.message));
   }
 }
 
-function addPostAPI(data) {
-  return axios.post("/api/post", data);
-}
-
-function* addPost(action) {
+function* deletePostSaga(action) {
   try {
-    // const result = yield call(addPostAPI, action.data);
-    yield delay(1000);
-    const id = shortId.generate();
-    yield put({
-      type: ADD_POST_SUCCESS,
-      data: {
-        id,
-        content: action.data,
-      },
-    });
-    yield put({
-      type: ADD_POST_TO_ME,
-      data: id,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: ADD_POST_FAILURE,
-      data: err.response.data,
-    });
+    yield delay(500); // 비동기 작업을 시뮬레이션하기 위한 딜레이
+
+    let posts = [];
+    if (typeof window !== "undefined") {
+      posts = JSON.parse(localStorage.getItem("posts")) || [];
+    }
+
+    posts = posts.filter((post) => post.id !== action.payload);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("posts", JSON.stringify(posts));
+    }
+
+    yield put(deletePostSuccess(action.payload));
+  } catch (error) {
+    yield put(deletePostFailure(error.message));
   }
 }
 
-function removePostAPI(data) {
-  return axios.delete("/api/post", data);
+function* watchPostActions() {
+  yield takeLatest(addPostRequest().type, addPostSaga);
+  yield takeLatest(deletePostRequest().type, deletePostSaga);
 }
 
-function* removePost(action) {
-  try {
-    // const result = yield call(removePostAPI, action.data);
-    yield delay(1000);
-    yield put({
-      type: REMOVE_POST_SUCCESS,
-      data: action.data,
-    });
-    yield put({
-      type: REMOVE_POST_OF_ME,
-      data: action.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: REMOVE_POST_FAILURE,
-      data: err.response.data,
-    });
-  }
-}
-
-function addCommentAPI(data) {
-  return axios.post(`/api/post/${data.postId}/comment`, data);
-}
-
-function* addComment(action) {
-  try {
-    // const result = yield call(addCommentAPI, action.data);
-    yield delay(1000);
-    yield put({
-      type: ADD_COMMENT_SUCCESS,
-      data: action.data,
-    });
-  } catch (err) {
-    yield put({
-      type: ADD_COMMENT_FAILURE,
-      data: err.response.data,
-    });
-  }
-}
-
-function* watchLoadPosts() {
-  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
-}
-
-function* watchAddPost() {
-  yield takeLatest(ADD_POST_REQUEST, addPost);
-}
-
-function* watchRemovePost() {
-  yield takeLatest(REMOVE_POST_REQUEST, removePost);
-}
-
-function* watchAddComment() {
-  yield takeLatest(ADD_COMMENT_REQUEST, addComment);
-}
-
-export default function* postSaga() {
-  yield all([
-    fork(watchAddPost),
-    fork(watchLoadPosts),
-    fork(watchRemovePost),
-    fork(watchAddComment),
-  ]);
-}
+export default watchPostActions;

@@ -1,7 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Layout, Menu, Typography, Row, Col, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../reducers/user";
 import MyFooter from "./MyFooter";
 import LoginModal from "./LoginModal";
 import PostDrawer from "./PostDrawer";
@@ -12,8 +14,10 @@ const { Text } = Typography;
 const AppLayout = ({ children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginModalVisible, setLoginModalVisible] = useState(false);
-
   const [postModalVisible, setPostModalVisible] = useState(false);
+
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   const openPostModal = () => {
     setPostModalVisible(true);
@@ -33,6 +37,10 @@ const AppLayout = ({ children }) => {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -83,9 +91,15 @@ const AppLayout = ({ children }) => {
             <Menu.Item key="1" onClick={openPostModal}>
               <Text>방명록</Text>
             </Menu.Item>
-            <Menu.Item key="2" onClick={openLoginModal}>
-              <Text>가입하기</Text>
-            </Menu.Item>
+            {isAuthenticated ? (
+              <Menu.Item key="2" onClick={handleLogout}>
+                <Text>로그아웃</Text>
+              </Menu.Item>
+            ) : (
+              <Menu.Item key="2" onClick={openLoginModal}>
+                <Text>가입하기</Text>
+              </Menu.Item>
+            )}
           </Menu>
         </div>
       )}

@@ -1,8 +1,15 @@
 import { Modal, Button, Input, Typography } from "antd";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createAccountRequest, resetAccountStatus } from "../reducers/user";
 
 const CreateAccountModal = ({ isVisible, onClose }) => {
   const { Text } = Typography;
+
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.user.loading);
+  const error = useSelector((state) => state.user.error);
+  const successMessage = useSelector((state) => state.user.successMessage);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +25,21 @@ const CreateAccountModal = ({ isVisible, onClose }) => {
     setConfirmPassword(e.target.value);
   }, []);
 
+  const handleCreateAccount = () => {
+    if (password !== confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    dispatch(createAccountRequest({ username, password }));
+  };
+
+  useEffect(() => {
+    if (successMessage || error) {
+      setTimeout(() => {
+        dispatch(resetAccountStatus());
+      }, 3000);
+    }
+  }, [successMessage, error, dispatch]);
   return (
     <Modal
       open={isVisible}
@@ -25,7 +47,7 @@ const CreateAccountModal = ({ isVisible, onClose }) => {
       footer={null}
       centered
       style={{ padding: "20px 40px" }}
-      zIndex={10001} // LoginModal 위에 나타나도록 z-index 설정
+      zIndex={10001}
     >
       <div
         style={{
@@ -54,9 +76,15 @@ const CreateAccountModal = ({ isVisible, onClose }) => {
           onChange={ConfirmPasswordHandler}
           style={{ marginBottom: 20 }}
         />
-        <Button type="text" block onClick={onClose}>
+        <Button
+          type="text"
+          block
+          onClick={handleCreateAccount}
+          loading={loading}
+        >
           <Text style={{ fontSize: "16px" }}>계정 생성</Text>
         </Button>
+        {error && <Text style={{ color: "red" }}>{error}</Text>}
       </div>
     </Modal>
   );

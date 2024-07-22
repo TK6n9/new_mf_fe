@@ -1,24 +1,23 @@
-import { configureStore } from "@reduxjs/toolkit";
-import createSagaMiddleware from "redux-saga";
+import { createStore, applyMiddleware, compose } from "redux";
 import { createWrapper } from "next-redux-wrapper";
+import createSagaMiddleware from "redux-saga";
+import rootReducer from "../reducers";
+import rootSaga from "../sagas";
 
-import rootReducer from "../reducers"; // index.js
-import rootSaga from "../sagas"; // index.js
-
-const makeStore = (context) => {
+const configureStore = (context) => {
   const sagaMiddleware = createSagaMiddleware();
-  const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(sagaMiddleware),
-    devTools: process.env.NODE_ENV !== "production",
-  });
+  const composeEnhancers =
+    typeof window !== "undefined" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      : compose;
+
+  const store = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(sagaMiddleware))
+  );
+
   store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;
 };
 
-const wrapper = createWrapper(makeStore, {
-  debug: process.env.NODE_ENV === "development",
-});
-
-export default wrapper;
+export const wrapper = createWrapper(configureStore, { debug: true });

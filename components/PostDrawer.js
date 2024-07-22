@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Col,
@@ -11,27 +11,30 @@ import {
   Avatar,
   List,
 } from "antd";
+import { addPostRequest, deletePostRequest } from "../reducers/post";
 const { Text } = Typography;
 
 const PostDrawer = ({ isVisible, onClose }) => {
-  const data = [
-    {
-      title: "제목1",
-      description: "내용1",
-    },
-    {
-      title: "제목2",
-      description: "내용2",
-    },
-    {
-      title: "제목3",
-      description: "내용3",
-    },
-    {
-      title: "제목4",
-      description: "내용4",
-    },
-  ];
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const posts = useSelector((state) => state.post.posts);
+  const [form] = Form.useForm();
+
+  const handleFinish = (values) => {
+    const newPost = {
+      ...values,
+      id: new Date().getTime().toString(), // 간단한 ID 생성
+      author: currentUser.username, // 작성자 정보 추가
+    };
+    dispatch(addPostRequest(newPost));
+    form.resetFields();
+    onClose();
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deletePostRequest(id));
+  };
 
   return (
     <>
@@ -47,64 +50,73 @@ const PostDrawer = ({ isVisible, onClose }) => {
           justifyContent: "space-between",
         }}
         footer={
-          <>
+          isAuthenticated ? (
             <Form
+              form={form}
               layout="vertical"
               requiredMark={false}
+              onFinish={handleFinish}
               style={{ marginTop: 20 }}
             >
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    name="제목"
-                    label={<Text>제목</Text>}
-                    rules={[
-                      {
-                        required: false,
-                        message: "제목을 입력해 주세요",
-                      },
-                    ]}
-                  >
-                    <Input.TextArea placeholder="글 제목" />
-                  </Form.Item>
-                </Col>
-              </Row>
+              <Col span={24}>
+                <Form.Item
+                  name="title"
+                  label={<Text>제목</Text>}
+                  rules={[
+                    {
+                      required: true,
+                      message: "제목을 입력해 주세요",
+                    },
+                  ]}
+                >
+                  <Input.TextArea rows={1} placeholder="글 제목" />
+                </Form.Item>
+              </Col>
+
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.Item
-                    name="내용"
+                    name="description"
                     label={<Text>내용</Text>}
                     rules={[
                       {
-                        required: false,
+                        required: true,
                         message: "내용을 입력해 주세요",
                       },
                     ]}
                   >
                     <Input.TextArea
-                      rows={4}
-                      placeholder={"내용을 입력해 주세요"}
+                      rows={6}
+                      placeholder="내용을 입력해 주세요"
                     />
                   </Form.Item>
                 </Col>
               </Row>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Button onClick={onClose} type="text">
+                  <Text>닫기</Text>
+                </Button>
+                <Button htmlType="submit" type="text">
+                  <Text>등록</Text>
+                </Button>
+              </div>
             </Form>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Button onClick={onClose} type="text">
-                <Text>닫기</Text>
-              </Button>
-              <Button onClick={onClose} type="text">
-                <Text>등록</Text>
-              </Button>
-            </div>
-          </>
+          ) : (
+            <Text>로그인 후 글을 작성할 수 있습니다.</Text>
+          )
         }
       >
         <List
           itemLayout="horizontal"
-          dataSource={data}
+          dataSource={posts}
           renderItem={(item, index) => (
-            <List.Item>
+            <List.Item
+              actions={[
+                item.author === currentUser.username && (
+                  <Button onClick={() => handleDelete(item.id)}>삭제</Button>
+                ),
+              ]}
+            >
               <List.Item.Meta
                 avatar={
                   <Avatar
@@ -112,7 +124,13 @@ const PostDrawer = ({ isVisible, onClose }) => {
                   />
                 }
                 title={<Text>{item.title}</Text>}
-                description={<Text>{item.description}</Text>}
+                description={
+                  <>
+                    <Text>{item.description}</Text>
+                    <br />
+                    <Text type="secondary">{item.author}</Text>
+                  </>
+                }
               />
             </List.Item>
           )}

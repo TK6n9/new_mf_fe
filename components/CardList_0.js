@@ -16,13 +16,12 @@ const CardList_0 = () => {
       </div>
       <div className={styles.heroContent}>
         <Title style={{ color: "white" }}>🪐CENTER ⚙️F GRAVITY🌏</Title>
-        {/* <p className={styles.heroDescription}>
-          The Soto Pot Kits have been designed to bring the outside in and
-          create beautiful ornaments for your home.
-        </p> */}
-        <button className={styles.heroButton}>
+        {/* <Text className={styles.heroDescription}>
+          우리는 어디로 가야하는 가?
+        </Text> */}
+        {/* <button className={styles.heroButton}>
           <Text style={{ color: "white" }}>가입하기</Text>
-        </button>
+        </button> */}
       </div>
     </div>
   );

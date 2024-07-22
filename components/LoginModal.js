@@ -1,14 +1,14 @@
-import { Modal, Button, Input, Avatar, Typography } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Modal, Button, Input, Typography } from "antd";
 import { useState, useCallback } from "react";
 import CreateAccountModal from "./CreateAccountModal"; // 경로를 적절히 수정하세요
-
 import { useDispatch, useSelector } from "react-redux";
-import Password from "antd/es/input/Password";
+import { loginRequest } from "../reducers/user";
 
 const LoginModal = ({ isVisible, onClose }) => {
-  //내일할꺼 훅도 확인하기
   const { Text } = Typography;
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.user.loading);
+  const error = useSelector((state) => state.user.error);
 
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -30,6 +30,11 @@ const LoginModal = ({ isVisible, onClose }) => {
     setCreateAccountVisible(false);
   }, []);
 
+  const handleLogin = useCallback(() => {
+    dispatch(loginRequest({ username: nickname, password }));
+    onClose();
+  }, [dispatch, nickname, password, onClose]);
+
   return (
     <>
       <Modal
@@ -48,7 +53,7 @@ const LoginModal = ({ isVisible, onClose }) => {
           }}
         >
           <Text style={{ fontSize: "20px", margin: "20px 0" }}>COG 계정</Text>
-          <Text style={{ fontSize: "16px" }}></Text>
+          {error && <Text style={{ color: "red" }}>{error}</Text>}
 
           <Input
             placeholder="닉네임"
@@ -66,7 +71,7 @@ const LoginModal = ({ isVisible, onClose }) => {
             <Button type="text" block onClick={showCreateAccountModal}>
               <Text style={{ fontSize: "16px" }}>계정 만들기</Text>
             </Button>
-            <Button type="text" block onClick={onClose}>
+            <Button type="text" block onClick={handleLogin} loading={loading}>
               <Text style={{ fontSize: "16px" }}>로그인</Text>
             </Button>
           </div>
