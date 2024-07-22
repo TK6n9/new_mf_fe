@@ -66,8 +66,11 @@ const userReducer = (
         draft.error = action.payload;
         break;
       case LOGOUT:
+        // draft.isAuthenticated = false;
+        // draft.currentUser = null;
         draft.isAuthenticated = false;
         draft.currentUser = null;
+        draft.error = null;
         break;
       case CREATE_ACCOUNT_REQUEST:
         draft.loading = true;

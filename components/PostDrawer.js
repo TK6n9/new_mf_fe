@@ -22,6 +22,12 @@ const PostDrawer = ({ isVisible, onClose }) => {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
+    if (!currentUser) {
+      // 현재 사용자가 없는 경우 예외 처리
+      console.error("로그인된 사용자가 없습니다.");
+      return;
+    }
+
     const newPost = {
       ...values,
       id: new Date().getTime().toString(), // 간단한 ID 생성
@@ -112,7 +118,7 @@ const PostDrawer = ({ isVisible, onClose }) => {
           renderItem={(item, index) => (
             <List.Item
               actions={[
-                item.author === currentUser.username && (
+                currentUser && item.author === currentUser.username && (
                   <Button onClick={() => handleDelete(item.id)}>삭제</Button>
                 ),
               ]}
